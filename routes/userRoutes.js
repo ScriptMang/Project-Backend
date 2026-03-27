@@ -30,7 +30,7 @@ router.get('/api/users/register', async(req, res) => {
     }
 })
 
-userRoutes.post('/login', async (req, res) => {
+userRoutes.post('/api/users/login', async (req, res) => {
     try{
         // find the user
         const user = await User.findOne({email: req.body.email })
