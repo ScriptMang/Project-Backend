@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken'
 const router = express.Router()
 const secret = process.env.JWT_SECRET 
 const expiration = '24h'
-router.get('/register', async(req, res) => {
+router.post('/register', async(req, res) => {
      try {
          // hash the pswd
         const hashedPassword= await bcrypt.hash(req.body.password, Number(process.env.SALT_ROUNDS));
