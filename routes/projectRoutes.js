@@ -6,6 +6,22 @@ import {authMiddleware} from '../utils/auth.js'
 const router = express.Router();
 router.use(authMiddleware);
 
+// add a project
+router.post('/', async(req, res)=>{
+    try {
+        const projs = await Project.create({
+            ...req.body,
+            user: req.user._id
+        })
+        await projs.populate('user','username')
+        res.status(200).json(projs)
+    }catch(err){
+        console.log(err)
+        res.status(400).json({message: err.message})
+    }
+})
+
+
 // fetch all projects
 router.get('/', async(req, res) => {
     try{
