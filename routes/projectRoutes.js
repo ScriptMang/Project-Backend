@@ -1,17 +1,17 @@
 import express from 'express'
 import Project from '../models/Project.js'
 import "dotenv/config"
-import authMiddleware from '../utils/auth.js'
+import {authMiddleware} from '../utils/auth.js'
 
 const router = express.Router();
-app.use(authMiddleware);
+router.use(authMiddleware);
 
 // fetch all projects
-router.get('/api/projects', async(req, res) => {
+router.get('/', async(req, res) => {
     try{
         // get all the projects for the user (you can filter based on logged in user {author: req.user._id})
         const projs = await Project.find({})
-                                .sort({createdAt: -1})
+                                .sort({_id: 1})
                                 .populate('user', 'username')
         res.status(200).json(projs)
     }catch(err){
@@ -19,3 +19,5 @@ router.get('/api/projects', async(req, res) => {
         res.status(400).json({message: err.message})
     }
 })
+
+export default router;
