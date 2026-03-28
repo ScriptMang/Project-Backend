@@ -9,9 +9,8 @@ app.use(authMiddleware);
 // fetch all projects
 router.get('/api/projects', async(req, res) => {
     try{
-        // get all the projects for the user (you can filter based on logged in user {author: req.user._id})
+        // get all the projects for the user 
         const projs = await Project.find({})
-                                .sort({createdAt: -1})
                                 .populate('user', 'username')
         res.status(200).json(projs)
     }catch(err){
