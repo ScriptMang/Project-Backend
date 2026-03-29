@@ -56,4 +56,27 @@ router.get('/:id', async(req, res) => {
     }
 })
 
+
+//get an existing target project
+router.put('/:id', async(req, res) => {
+    try{
+        // get all the projects for the user (you can filter based on logged in user {author: req.user._id})
+        const proj = await Project.findByIdAndUpdate(req.params.id, req.body, { new: true })
+                                .sort({_id: 1})
+                                .populate('user', 'username')
+    
+        if (req.user._id != proj.user ){
+          return res.status(403).json({message: 'User forbidden from updating this note'})
+        }
+        
+        if (!proj) {
+          return res.status(404).json({ message: 'No note found with this id!' });
+        }
+        res.status(200).json(proj);
+    }catch(err){
+        console.log(err.message)
+        res.status(500).json({message: err.message})
+    }
+})
+
 export default router;
