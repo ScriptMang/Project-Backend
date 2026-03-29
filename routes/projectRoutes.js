@@ -26,7 +26,7 @@ router.post('/', async(req, res)=>{
 router.get('/', async(req, res) => {
     try{
         // get all the projects for the user (you can filter based on logged in user {author: req.user._id})
-        const projs = await Project.find({})
+        const projs = await Project.find({ user: {$eq: req.user._id}})
                                 .sort({_id: 1})
                                 .populate('user', 'username')
         res.status(200).json(projs)
