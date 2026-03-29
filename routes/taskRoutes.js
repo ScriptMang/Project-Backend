@@ -3,11 +3,13 @@ import Task from '../models/Task.js'
 import "dotenv/config"
 import {authMiddleware} from '../utils/auth.js'
 
+
 const router = express.Router();
+router.use('/api/projects', projectRoutes)
 router.use(authMiddleware);
 
 // add a task
-router.post('/', async(req, res)=>{
+router.post('/api/projects/:projectId/tasks', async(req, res)=>{
     try {
         const tasks = await Task.create({
             ...req.body,
@@ -23,7 +25,7 @@ router.post('/', async(req, res)=>{
 
 
 // fetch all tasks
-router.get('/', async(req, res) => {
+router.get('/api/projects/:projectId/tasks', async(req, res) => {
     try{
         // get all the projects for the user (you can filter based on logged in user {author: req.user._id})
         const tasks = await Task.find({ user: {$eq: req.user._id}})
