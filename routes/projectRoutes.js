@@ -79,4 +79,25 @@ router.put('/:id', async(req, res) => {
     }
 })
 
+router.delete('/:id', async(req, res) => {
+    try {
+    const proj = await Project.findById(req.params.id);
+    if (req.user._id != proj.user) {
+      return res.status(403).json({message: 'User forbidden from updating this project'});
+    }
+    // This needs an authorization check
+    if (!proj) {
+      return res.status(404).json({ message: 'No project found with this id!' });
+    }
+    proj.deleteOne({_id: req.params.id});
+    res.json({ message: 'Project deleted!' });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+})
+
+
+
+
+
 export default router;
