@@ -40,20 +40,20 @@ router.get('/', async(req, res) => {
 //get an existing target project
 router.get('/:id', async(req, res) => {
     try{
-        // get all the projects for the user (you can filter based on logged in user {author: req.user._id})
-        const projs = await Project.find({ user: {$eq: req.user._id}})
-                                .sort({_id: 1})
-                                .populate('user', 'username')
-    
-        const tgtId = req.parms.id
-        if (id > projs.length) {
-            throw error("The id is not part of any projects")
+        const proj = await Project.findById(req.params.id)
+        if (req.user._id != proj.user) {
+            console.log("Is this an object id: ", req.params.id);
+            return res.status(403).json({message: 'User forbidden from updating this project'});
         }
-        res.status(200).json(projs[tgtId-1])
-    }catch(err){
-        console.log(err.message)
-        res.status(400).json({message: err.message})
-    }
+        // This needs an authorization check
+        if (!proj) {
+        return res.status(404).json({ message: 'No project found with this id!' });
+        }
+        res.status(200).json(proj)
+        }catch(err){
+            console.log(err.message)
+            res.status(400).json({message: err.message})
+        }
 })
 
 
