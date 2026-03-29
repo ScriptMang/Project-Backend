@@ -66,7 +66,7 @@ router.put('/:id', async(req, res) => {
                                 .populate('user', 'username')
     
         if (req.user._id != proj.user ){
-          return res.status(403).json({message: 'User forbidden from updating this note'})
+          return res.status(403).json({message: 'User forbidden from updating this project'})
         }
         
         if (!proj) {
