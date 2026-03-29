@@ -3,6 +3,7 @@ import "dotenv/config"
 import "./config/connection.js"
 import userRoutes from './routes/userRoutes.js' 
 import projectRoutes from './routes/projectRoutes.js' 
+import taskRoutes from './routes/taskRoutes.js'
 
 const app = express()
 const PORT = process.env.PORT;
