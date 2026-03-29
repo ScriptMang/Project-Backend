@@ -14,7 +14,7 @@ router.post('/', async(req, res)=>{
             user: req.user._id
         })
         await projs.populate('user','username')
-        res.status(200).json(projs)
+        res.status(201).json(projs)
     }catch(err){
         console.log(err)
         res.status(400).json({message: err.message})
