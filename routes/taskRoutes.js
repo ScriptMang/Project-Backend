@@ -9,7 +9,7 @@ router.use('/api/projects', projectRoutes)
 router.use(authMiddleware);
 
 // add a task
-router.post('/api/projects/:projectId/tasks', async(req, res)=>{
+router.post('/:projectId/tasks', async(req, res)=>{
     try {
         const tasks = await Task.create({
             ...req.body,
@@ -25,7 +25,7 @@ router.post('/api/projects/:projectId/tasks', async(req, res)=>{
 
 
 // fetch all tasks
-router.get('/api/projects/:projectId/tasks', async(req, res) => {
+router.get('/:projectId/tasks', async(req, res) => {
     try{
         // get all the projects for the user (you can filter based on logged in user {author: req.user._id})
         const tasks = await Task.find({ user: {$eq: req.user._id}})
@@ -37,27 +37,6 @@ router.get('/api/projects/:projectId/tasks', async(req, res) => {
         res.status(400).json({message: err.message})
     }
 })
-
-
-//get an existing target task
-router.get('/:id', async(req, res) => {
-    try{
-        const task = await Task.findById(req.params.id)
-        if (req.user._id != task.user) {
-            console.log("Is this an object id: ", req.params.id);
-            return res.status(403).json({message: 'User forbidden from updating this task'});
-        }
-        // This needs an authorization check
-        if (!task) {
-        return res.status(404).json({ message: 'No task found with this id!' });
-        }
-        res.status(200).json(task)
-        }catch(err){
-            console.log(err.message)
-            res.status(400).json({message: err.message})
-        }
-})
-
 
 //get an existing target task
 router.put('/:id', async(req, res) => {
