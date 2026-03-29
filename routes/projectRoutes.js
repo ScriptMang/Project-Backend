@@ -70,7 +70,7 @@ router.put('/:id', async(req, res) => {
         }
         
         if (!proj) {
-          return res.status(404).json({ message: 'No note found with this id!' });
+          return res.status(404).json({ message: 'No project found with this id!' });
         }
         res.status(200).json(proj);
     }catch(err){
