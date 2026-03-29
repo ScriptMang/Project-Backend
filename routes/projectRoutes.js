@@ -61,10 +61,7 @@ router.get('/:id', async(req, res) => {
 router.put('/:id', async(req, res) => {
     try{
         // get all the projects for the user (you can filter based on logged in user {author: req.user._id})
-        const proj = await Project.findByIdAndUpdate(req.params.id, req.body, { new: true })
-                                .sort({_id: 1})
-                                .populate('user', 'username')
-    
+        const proj = await Project.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' })
         if (req.user._id != proj.user ){
           return res.status(403).json({message: 'User forbidden from updating this project'})
         }
