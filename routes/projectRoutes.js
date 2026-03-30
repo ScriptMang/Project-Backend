@@ -1,10 +1,12 @@
 import express from 'express'
 import Project from '../models/Project.js'
 import "dotenv/config"
+import taskRoutes from "./taskRoutes.js"
 import {authMiddleware} from '../utils/auth.js'
 
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 router.use(authMiddleware);
+router.use("/:id/tasks", taskRoutes);
 
 // add a project
 router.post('/', async(req, res)=>{
@@ -49,6 +51,7 @@ router.get('/:id', async(req, res) => {
         if (!proj) {
         return res.status(404).json({ message: 'No project found with this id!' });
         }
+        
         res.status(200).json(proj)
         }catch(err){
             console.log(err.message)

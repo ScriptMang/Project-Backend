@@ -4,16 +4,14 @@ import "dotenv/config"
 import {authMiddleware} from '../utils/auth.js'
 
 
-const router = express.Router();
-router.use('/api/projects', projectRoutes)
+const router = express.Router({mergeParams: true});
 router.use(authMiddleware);
 
-// add a task
-router.post('/:projectId/tasks', async(req, res)=>{
+// add a task for route api/projects/:id/tasks
+router.post('/', async(req, res)=>{
     try {
         const tasks = await Task.create({
-            ...req.body,
-            user: req.user._id
+            ...req.body
         })
         await tasks.populate('user','username')
         res.status(201).json(tasks)
@@ -24,8 +22,8 @@ router.post('/:projectId/tasks', async(req, res)=>{
 })
 
 
-// fetch all tasks
-router.get('/:projectId/tasks', async(req, res) => {
+// fetch all tasks for route api/projects/:id/tasks
+router.get('/', async(req, res) => {
     try{
         // get all the projects for the user (you can filter based on logged in user {author: req.user._id})
         const tasks = await Task.find({ user: {$eq: req.user._id}})

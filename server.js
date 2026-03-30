@@ -12,6 +12,7 @@ app.use(express.json())
 app.use('/api/users', userRoutes)
 app.use('/api/projects', projectRoutes)
 app.use('/api/tasks', taskRoutes)
+
 app.get('/', (req, res)=>{
     res.send('Hello World!')
 })
