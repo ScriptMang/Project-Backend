@@ -11,9 +11,9 @@ router.use(authMiddleware);
 router.post('/', async(req, res)=>{
     try {
         const tasks = await Task.create({
-            ...req.body
+            ...req.body,
+            project: req.params.id
         })
-        await tasks.populate('user','username')
         res.status(201).json(tasks)
     }catch(err){
         console.log(err)
