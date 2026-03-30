@@ -9,7 +9,7 @@ export async function authMiddleware(req, res, next) {
         token = token.split(" ").pop().trim()
         const { data }  = jwt.verify(token, secret)
         req.user = data
-        
+        console.log("user data: ", req.user)
         // move on to the next middleware func
         next()
     }catch(err){

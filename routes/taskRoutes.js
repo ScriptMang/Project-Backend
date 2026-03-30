@@ -1,5 +1,7 @@
 import express from 'express'
 import Task from '../models/Task.js'
+import Project from '../models/Project.js'
+
 import "dotenv/config"
 import {authMiddleware} from '../utils/auth.js'
 
@@ -37,15 +39,18 @@ router.get('/', async(req, res) => {
 })
 
 //get an existing target task
-router.put('/:id', async(req, res) => {
+router.put('/:taskId', async(req, res) => {
     try{
-        // get all the projects for the user (you can filter based on logged in user {author: req.user._id}
-        const task = await Task.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' })
+        const proj = await Project.findById(req.params.id) 
+        console.log("current project user_id from taskRoutes is: ", proj)
+        console.log("whats inside req params from taskRoutes: ", req.params)
 
-        if (req.user._id != task.user ){
+        // console.log("current user from taskRoutes : ", req.user)
+        if (req.user._id != proj.user){
           return res.status(403).json({message: 'User forbidden from updating this task'})
         }
-        
+         // get all the projects for the user (you can filter based on logged in user {author: req.user._id}
+        const task = await Task.findByIdAndUpdate(req.params.taskId, req.body, { returnDocument: 'after' })
         if (!task) {
           return res.status(404).json({ message: 'No task found with this id!' });
         }
